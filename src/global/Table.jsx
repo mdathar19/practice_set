@@ -8,8 +8,9 @@ import './table.css'
 function FilterHeader (props) {
     const {data,isActive,setIsActive,index} = props;
     const {key,filterType,type} = data;
-    const inputRef = useRef(null)
+    const inputRef = useRef(null);
     const [selected, setIsSelected] = useState("Choose one");
+    const [filteredBy , setFilterBy] = useState(null)
 
     function handleSelection (e,item) {
         e.stopPropagation();
@@ -19,6 +20,7 @@ function FilterHeader (props) {
     function handleFilter (e) {
         e.preventDefault();
         // console.log("ref",inputRef.current.value,selected)
+        setFilterBy(inputRef.current.value)
         inputRef.current.value = "";
         setIsActive(isActive===index?null:index);
     }
@@ -47,6 +49,14 @@ function FilterHeader (props) {
                                                 <span title={type.title} onClick={(e)=>handleSelection(e,type.title)} style={{fontSize:'1rem'}} className={`p-2 border rounded-3 m-1 ${selected===type.title && 'bg-primary text-white'}`}>{type.shortTitle}</span>
                                             ))
                                         }
+                                        {
+                                            filteredBy && (
+                                                <div className='mt-2'>
+                                                    <span>Filtered By : </span>
+                                                    <span  className='text-center'>{filteredBy}</span>
+                                                </div>
+                                            )
+                                        }
                                     </div>
                             <div className="p-2">
                                 <input type={type} required ref={inputRef} onClick={(e)=>e.stopPropagation()} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
@@ -71,7 +81,7 @@ function FilterHeader (props) {
 function BodyData () {
     return (
         <tr>
-            <th scope="row">1</th>
+            <td scope="row">1</td>
             <td>Mark</td>
             <td>Otto</td>
             <td>@mdo</td>
